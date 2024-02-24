@@ -1,0 +1,92 @@
+/* styles.css */
+
+/* Stili di base per il pulsante hamburger */
+.toggleButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* Nasconde il pulsante su schermi più grandi di 768px */
+  }
+  
+  /* Stili per l'icona hamburger */
+  .hamburgerSvg {
+    fill: #333;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  /* Stili per il contenitore del menu */
+  .navContainer {
+    position: fixed;
+  top: 0;
+  right: -300px;
+  height: 100%;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  }
+  
+  /* Animazione per aprire il menu */
+  .slideIn {
+    right: 0;
+  }
+  
+  /* Animazione per chiudere il menu */
+  .slideOut {
+    right: -300px;
+  }
+  
+  /* Stili per il pulsante di chiusura del menu */
+  .closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0; /* Posiziona la "X" a destra */
+  }
+  
+  /* Stili per l'icona di chiusura */
+  .closeSvg {
+    fill: #333;
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Stili per i link nel menu */
+  .navLinks {
+    padding: 20px;
+  }
+  
+  /* Stili per ogni singolo link */
+  .link {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  /* Hover effect sui link */
+  .link:hover {
+    background-color: #eee;
+  }
+  
+  /* Stili responsive per il menu */
+  @media screen and (max-width: 768px) {
+    .toggleButton {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+  
+    .navLinks {
+      padding: 10px;
+    }
+  }
+  
