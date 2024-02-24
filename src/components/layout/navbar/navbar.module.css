@@ -1,0 +1,132 @@
+.containerNavBar {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.containerLogo {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.containerLogo > .title {
+    color: #0c2f41;
+    font-size: 3.55rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+    align-items: center;
+}
+
+.containerNavLinks {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-top: 1rem;
+    align-items: center;
+    border-radius: 9999px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    flex-direction: column;
+}
+
+.navBarLinks {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    font-weight: calc(2+4);
+}
+
+.navBarLinks:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+    .containerLogo > .title{
+        font-size: 3rem;
+        margin-left: 0.8rem;
+    }
+    .containerNavBar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .containerNavLinks {
+        display: none;
+    }
+}
+
+/* MOBILE NAVBAR  */
+
+@media screen and (min-width: 640px) {
+    
+    .buttonHamburger {
+        display: none;
+        
+    }
+
+}
+
+.hamburgerIcon {
+    margin-bottom: 1.25rem;
+    width: 3rem;
+    height: 3rem;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.containerNavBarMobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.containerNavBarMobile>div {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.containerNavBarMobile>div>button {
+    margin-left: 2rem;
+    margin-top: 2.75rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+.containerNavBarMobile>div>button>svg {
+    color: #111827;
+}
+
+.navBarMobile {
+    position: fixed;
+    margin-top: 2rem;
+    height: 100%;
+}
+
+.navBarMobile>div {
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.navBarMobile>div>.mobileNavLinks {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #111827;
+}
