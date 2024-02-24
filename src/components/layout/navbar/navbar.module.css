@@ -11,7 +11,7 @@
     margin-bottom: 0.5rem;
 }
 
-.containerLogo > .title {
+.containerLogo>.title {
     color: #0c2f41;
     font-size: 3.55rem;
     line-height: 2.5rem;
@@ -50,36 +50,55 @@
 }
 
 @media screen and (max-width: 768px) {
-    .containerLogo > .title{
+    .containerLogo>.title {
         font-size: 3rem;
         margin-left: 0.8rem;
+      
     }
+
     .containerNavBar {
         flex-direction: row;
         justify-content: space-between;
     }
+
     .containerNavLinks {
         display: none;
     }
+
+}
+
+@media screen and (max-width: 640px) {
+    .containerLogo>.title {
+      
+        font-size: 40px;
+    }
+}
+
+@media screen  and (max-width: 375px) {
+    .containerLogo>.title {
+        font-size: 30px;
+    }
+    
 }
 
 /* MOBILE NAVBAR  */
 
-@media screen and (min-width: 640px) {
-    
+
+@media screen and (min-width: 770px) {
+
     .buttonHamburger {
         display: none;
-        
     }
 
 }
 
 .hamburgerIcon {
     margin-bottom: 1.25rem;
-    width: 3rem;
+    width: 2.2rem;
     height: 3rem;
     flex-direction: row;
     justify-content: end;
+    margin-right: 4px;
 }
 
 .containerNavBarMobile {
