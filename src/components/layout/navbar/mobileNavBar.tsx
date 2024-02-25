@@ -15,9 +15,11 @@ const MobileNavBar = () => {
             } else {
                 // Prevent scrolling
                 document.body.style.overflow = 'hidden'
-            }
-            return !status
+              }
+              console.log(status);
+              return !status
         })
+        
     }
     return (
         <>

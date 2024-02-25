@@ -1,98 +1,80 @@
-  /* Aggiungi queste regole nel tuo file CSS */
-/* Aggiungi queste regole nel tuo file CSS */
+/* styles.css */
+
 .footer {
+  background-color: white;
+  color: #333;
+  padding: 20px;
+  text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #fff;
-  color: #000000;
-  padding: 1.25rem 0;
-  text-align: center;
-  justify-content: center;
 }
 
-.footer_container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 60rem;
-  margin: 0 auto;
-  justify-content: center;
-}
-
-.social_icons {
+.socialIcons {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: row; /* Imposta la direzione delle colonne per le icone sopra */
+  margin-bottom: 20px;
 }
 
-.social_icons > .social_icons_img {
-  width: 2.5rem;
-  height: 2.5rem;
-   /* Aggiungi spazio tra le icone */
-  margin: 0.5rem;
+.iconLink {
+  margin: 0 10px;
 }
 
-.social_icons > .social_icons_img:hover {
+.icon {
+  border-radius: 30%;
+  margin: 0 10px;
+}
+
+.icon:hover {
   transform: scale(1.2);
   transition: transform 0.3s ease-in-out;
 }
 
-.footer_links {
+.footerContent {
   display: flex;
+  flex-direction: column;
   align-items: center;
-}
-
-.footer_links .footer_links_a {
-  color: #333;
-  text-decoration: none;
-  margin-left: 0.625rem; /* Aggiungi spazio tra i link */
-  font-size: 1.2rem;
-}
-
-.footer_links > .footer_links_a:hover {
-  text-decoration: underline;
 }
 
 .copyright {
- /* Posiziona il copyright a sinistra */
-  font-size: 1.2rem;
-  font-weight: bolder;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 10px;
+  font-size: 21px;
+  font-weight: bold;
 }
 
-  @media screen and (max-width: 768px) {
-    
-    .copyright {
-      color : red;
-      font-size: 1.156rem;
-    }
-     
-    .footer_links > a {
-      color : red;
-      font-size: 0.5rem;
-    }
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 
-    .footer_links, .social_icons {
-      margin-top: 10px;
-    }
-  
-    .footer_links, .social_icons, .copyright {
-      width: 100%;
-      text-align: center;
-    }
+.link {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 18px;
+}
 
-    .social_icons > .social_icons_img {
-      margin: 0.5rem 1rem; /* Aggiusta spaziatura tra icone su schermi più piccoli */
-      width: 30px;
-      height: 30px;
-    }
-  
-    .footer_links {
-      justify-content: center; /* Allinea i link al centro su schermi più piccoli */
-    }
+.link:hover {
+  color: #555;
+}
+
+.createdBy {
+  margin-top: 10px;
+  display: block;
+}
+
+/* Stili responsive */
+@media screen and (max-width: 768px) {
+  .footerLinks {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Spazio ridotto nei layout responsivi */
   }
-  
+
+  .iconLink {
+    margin: 10px 0;
+  }
+}

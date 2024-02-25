@@ -19,35 +19,41 @@ const Footer = (props: Props) => {
   
   return (
     <>
-    <footer className={styles.footer}>
-      
-      <div className={styles.social_icons}>
-       {footerIcons.map((icon) => (
-        <>
-         <Link href={icon.href as Url} className={styles.social_icons_img}>
-         <Image key={icon.id} src={icon.icon} alt={`${icon.icon}`} className={styles.social_icons_img} width={40} height={40} />
-         </Link>
-        </>
-       ))}
-      </div>
+<footer className={styles.footer}>
+        
+        <div className={styles.socialIcons}>
+          {footerIcons.map((icon) => (
+            <Link href={icon.href as Url} className={styles.iconLink} key={icon.id}>
+              <Image src={icon.icon} alt={`${icon.icon}`} className={styles.icon} width={40} height={40} />
+            </Link>
+          ))}
+        </div>
 
-    <div className={styles.footer_container}>
+        <div className={styles.footerContent}>
 
-      <div className={styles.copyright}>
-        &copy;{` ${new Date().getFullYear()} Cristian's pastry. Tutti i diritti sono riservati.`}
-      </div>
+          <div className={styles.copyright}>
+            &copy;{` ${new Date().getFullYear()} Cristian's pastry. Tutti i diritti sono riservati.`}
+          </div>
 
-      <div className={styles.footer_links}>
-        {footerLinks.map((link) => (
-          <Link key={link.id} href={link.href} className={styles.footer_links_a}>{link.title}</Link>
-        ))}
-      </div>
-      
-    </div>
-  </footer>
+          <div className={styles.footerLinks}>
+            {footerLinks.map((link) => (
+              <Link key={link.id} href={link.href} className={styles.link}>{link.title}</Link>
+            ))}
+          </div>
+          
+        </div>
+        <strong className={styles.createdBy}>creato da Cristian Sorrentino</strong>
+      </footer>
     </>
   )
 }
+
+/*
+.social_icons > .social_icons_img:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease-in-out;
+}
+*/
 
 /*const POROKS = () => {
   return (
