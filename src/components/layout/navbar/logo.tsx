@@ -1,4 +1,5 @@
 
+import siteMetadata from '@/constant/meta';
 import styles from './style/navbar.module.css';
 import Link from 'next/link';
 
@@ -8,7 +9,7 @@ const Logo = () => {
         <div className={styles.containerLogo}>
                  
                  <Link href={"/"} className={styles.title}>
-                    {"Cristian's pastry"}
+                    {siteMetadata.title}
                  </Link>
                 
                 </div>

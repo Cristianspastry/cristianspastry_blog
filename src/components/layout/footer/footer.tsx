@@ -13,6 +13,8 @@ import { footerIcons } from '@/constant/icons';
 import { footerLinks } from '@/constant/links';
 import Link from 'next/link';
 import { Url } from 'next/dist/shared/lib/router/router';
+import { getFullYear } from '@/constant/helps';
+import siteMetadata from '@/constant/meta';
 type Props = {}
 
 const Footer = (props: Props) => {
@@ -32,7 +34,7 @@ const Footer = (props: Props) => {
         <div className={styles.footerContent}>
 
           <div className={styles.copyright}>
-            &copy;{` ${new Date().getFullYear()} Cristian's pastry. Tutti i diritti sono riservati.`}
+            &copy;{` ${getFullYear()} ${siteMetadata.title}. Tutti i diritti sono riservati.`}
           </div>
 
           <div className={styles.footerLinks}>
@@ -42,7 +44,7 @@ const Footer = (props: Props) => {
           </div>
           
         </div>
-        <strong className={styles.createdBy}>creato da Cristian Sorrentino</strong>
+        <strong className={styles.createdBy}>creato da {siteMetadata.author}</strong>
       </footer>
     </>
   )

@@ -6,6 +6,7 @@ import threadsIcon from '../../assets/img/threads.png';
 import youtubeIcon from '../../assets/img/youtube.png';
 
 import { StaticImageData } from 'next/image';
+import siteMetadata from './meta';
 
 interface IconProps {
     id: number
@@ -17,27 +18,27 @@ export const footerIcons: IconProps[] = [
 {
     id: 0,
     icon: instagramIcon,
-    href : "https://www.instagram.com/cristianspastry/"
+    href : siteMetadata.instagram
 },
 {
     id: 1,
     icon: facebookIcon,
-    href : "https://www.facebook.com/cristianspastry/"
+    href : siteMetadata.facebook
 },
 {
     id: 2,
     icon: tikTokIcon,
-    href : "https://www.tiktok.com/@cristianspastry"
+    href : siteMetadata.tikTok
 },
 {
     id: 3,
     icon: threadsIcon,
-    href : "https://www.threads.net/@cristianspastry?hl=it"
+    href : siteMetadata.threads
 },
 {
     id: 4,
     icon: youtubeIcon,
-    href : "https://www.youtube.com/channel/UCGqgjYkYEKkTH73_-RL59wA"
+    href : siteMetadata.youtube
 }
 ]
 

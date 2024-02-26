@@ -78,7 +78,19 @@
 
 @media screen  and (max-width: 375px) {
     .containerLogo>.title {
-        font-size: 35px;
+        font-size: 26px;
+    }
+    
+}
+/* 379 - 453 */
+
+@media screen  and (max-width: 453px) {
+    .containerLogo>.title {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 1.2rem;
+        align-items: center;
+        margin-right: 20px;
     }
     
 }
