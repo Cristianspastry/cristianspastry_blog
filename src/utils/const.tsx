@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { FacebookIcon, InstagramIcon, TiktokIcon } from "./icons"
 
 export const metaData : Metadata = {
     title: 'Cristian\'s pastry',
@@ -17,6 +18,7 @@ export const metaData : Metadata = {
         ],
         locale: 'it-IT',
         type: 'website',
+        emails:'cristianspastry@gmail.com',
     },
     robots: {
         index: true,
@@ -50,13 +52,14 @@ export const metaData : Metadata = {
         capable: true,
         statusBarStyle: 'default',
     },
+
 }
 
 export const routes = {
     home: '/',
     ricette: '/ricette',
-    about: '/about',
-    contact: '/contact',
+    about: '/about-me',
+    contatti: '/contatti',
     terminiCondizioni: '/termini-condizioni',
 }
 
@@ -64,15 +67,32 @@ export const navLinks = [
     { label: 'Home', href: routes.home },
     { label: 'Ricette', href: routes.ricette },
     { label: 'About', href: routes.about },
-    { label: 'Contact', href: routes.contact },
+    { label: 'Contatti', href: routes.contatti },
 ]
 
 export const footerLinks = [
     { label: 'Chi siamo', href: routes.about },
-    { label: 'Contatti', href: routes.contact },
+    { label: 'Contatti', href: routes.contatti },
     { label: 'Termini e condizioni', href: routes.terminiCondizioni },
 ]
 
+export const socialIcons = [
+    {
+        link: 'https://facebook.com',
+        icon: <FacebookIcon/>,
+        ariaLabel : 'Facebook'
+    },
+    {
+        link: 'https://instagram.com',
+        icon: <InstagramIcon/>,
+        ariaLabel : 'Instagram'
+    },
+    {
+        link: 'https://tiktok.com',
+        icon: <TiktokIcon/>,
+        ariaLabel : 'TikTok'
+    },
+]
 export const socialLinks = [
     { label: 'Facebook', href: 'https://facebook.com', icon: 'facebook' },
     { label: 'Twitter', href: 'https://twitter.com', icon: 'twitter' },

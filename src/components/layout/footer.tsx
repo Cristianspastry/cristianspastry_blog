@@ -1,11 +1,12 @@
-import { footerLinks, metaData } from "@/utils/const";
+import { footerLinks, metaData, socialIcons } from "@/utils/const";
 import {FacebookIcon, InstagramIcon,TiktokIcon} from "@/utils/icons";
 import Link from "next/link";
 import { getYear } from "@/utils/utils";
 
 const Footer: React.FC = () => {
+ 
   return (
-    <footer className=" py-8">
+    <footer className=" py-8 bottom-0 left-0 right-0 z-10">
       <div className="max-w-screen-lg mx-auto px-4">
         <div className="flex justify-between items-center">
           <div>
@@ -13,16 +14,13 @@ const Footer: React.FC = () => {
             <p className="text-gray-600">{metaData.description?.toString()}</p>
           </div>
           <div className="flex space-x-4">
-            {/* Icone social */}
-            <Link href="#" className="text-gray-600 hover:text-gray-800" aria-label="Facebook">
-             <InstagramIcon/>
-            </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-800" aria-label="Twitter">
-              <FacebookIcon/>
-            </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-800" aria-label="Instagram">
-              <TiktokIcon/>
-            </Link>
+            {
+              socialIcons.map((icon, index) => (
+                <Link key={index} href={icon.link} className="text-gray-600 hover:text-gray-800" aria-label={icon.ariaLabel}>
+                  {icon.icon}
+                </Link>
+              ))
+            }
           </div>
         </div>
         <hr className="my-4 border-gray-300" />
