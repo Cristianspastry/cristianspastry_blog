@@ -10,13 +10,13 @@ type Props = {
   recipes : Ricetta[];
 }
 
-const LastRecipesSections = (props: Props) => {
+const LastRecipesSections = ({recipes}: Props) => {
     
   return (
     <>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Mostra le ultime ricette */}
-          {props.recipes.map((recipe : Ricetta) => (
+          {recipes.map((recipe : Ricetta) => (
             <>
             <RecipeCard key={recipe.id} recipe={recipe} />
             <RecipeCard key={recipe.id} recipe={recipe} />
