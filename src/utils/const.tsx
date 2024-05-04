@@ -1,6 +1,5 @@
 import { Metadata } from "next"
-import { FacebookIcon, InstagramIcon, TiktokIcon } from "./icons"
-
+import { instagramImg, facebookImg, tikTokImg } from "./img"
 export const metaData : Metadata = {
     title: 'Cristian\'s pastry',
     description: 'Blog di pasticceria classica e moderna',
@@ -61,6 +60,9 @@ export const routes = {
     about: '/about-me',
     contatti: '/contatti',
     terminiCondizioni: '/termini-condizioni',
+    login : '/auth/login',
+    register : '/auth/register',
+    profile : '/auth/profile',
 }
 
 export const navLinks = [
@@ -79,17 +81,17 @@ export const footerLinks = [
 export const socialIcons = [
     {
         link: 'https://facebook.com',
-        icon: <FacebookIcon/>,
+        icon: facebookImg,
         ariaLabel : 'Facebook'
     },
     {
         link: 'https://instagram.com',
-        icon: <InstagramIcon/>,
+        icon: instagramImg,
         ariaLabel : 'Instagram'
     },
     {
         link: 'https://tiktok.com',
-        icon: <TiktokIcon/>,
+        icon: tikTokImg,
         ariaLabel : 'TikTok'
     },
 ]
@@ -99,3 +101,5 @@ export const socialLinks = [
     { label: 'Instagram', href: 'https://instagram.com', icon: 'instagram' },
     { label: 'TikTok', href: 'https://tiktok.com', icon: 'tiktok' },
 ]
+
+

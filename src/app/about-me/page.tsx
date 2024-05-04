@@ -1,7 +1,6 @@
 import { socialIcons } from "@/utils/const";
-import { FacebookIcon, InstagramIcon, TiktokIcon } from "@/utils/icons";
 import Link from "next/link";
-
+import Image from "next/image";
 
 const AboutPage: React.FC = () => {
     return (
@@ -20,9 +19,9 @@ const AboutPage: React.FC = () => {
             <div className="flex space-x-4">
                 {
                     socialIcons.map((icon, index) => (
-                        <a key={index} href={icon.link} className="text-gray-600 hover:text-gray-800" aria-label={icon.ariaLabel}>
-                            {icon.icon}
-                        </a>
+                        <Link key={index} href={icon.link} className="text-gray-600 hover:text-gray-800" aria-label={icon.ariaLabel}>
+                            <Image src={icon.icon} alt={icon.ariaLabel} width={24} height={24} />
+                        </Link>
                     ))
                 }       
             </div>

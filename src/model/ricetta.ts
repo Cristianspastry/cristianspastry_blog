@@ -1,11 +1,14 @@
 
 
 // model ricetta
+
+import { Category } from "./category";
+
   
 export interface Ricetta {
     id: string;
     titolo: string;
-    categoria: string;
+    categoria: Category;
     descrizione: string;
     imageUrl: string;
     tempoDiPreparazione: {

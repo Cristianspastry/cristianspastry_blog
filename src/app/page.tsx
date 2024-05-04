@@ -3,12 +3,23 @@
 import SearchBar from "@/components/searchBar/searchBar";
 import FeaturedRecipesSections from "@/components/sections/FeaturedRecipesSections/FeaturedRecipesSections";
 import LastRecipesSections from "@/components/sections/LastRecipeSections/LastRecipesSections";
+import { auth } from "@/firebase/firabase";
 import { Ricetta } from "@/model/ricetta";
+import { routes } from "@/utils/const";
 import { fetchRecipes } from "@/utils/service";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Home() {
+   const [user] = useAuthState(auth);
+   const router = useRouter();
    const [recipes, setRecipes] = useState<Ricetta[]>([]);
+
+
+   if(!user) {
+     redirect(routes.login);
+   }
 
    useEffect(() => {
      const getRecipes = async () => {
@@ -24,13 +35,13 @@ export default function Home() {
 
   
    return (
-      <div className="max-w-screen-lg mx-auto px-4 py-8">
+      <main className="max-w-screen-lg mx-auto px-4 py-8">
          <div className=" flex justify-between">
          <h1 className="text-3xl font-semibold text-left mb-8">Ultime Ricette</h1>
          <SearchBar recipes={recipes}/>
          </div>
          <LastRecipesSections recipes={recipes} />
-      </div>
+      </main>
    );
 }
 {/*<FeaturedRecipesSections 

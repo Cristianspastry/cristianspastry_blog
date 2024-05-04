@@ -44,30 +44,31 @@ const SearchBar: React.FC<Props> = ({recipes}: Props) => {
 
 
   return (
-    <div className="relative">
-      <form className="flex items-center" onSubmit={handleSearch}>
-        
+    <div className="md:hidden hidden">
+       <form className="flex items-center" onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="Cerca ricette..."
           value={searchQuery}
           onChange={handleChange}
-          className="w-64 px-4 py-2 pr-10 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          className="w-64 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
         />
-         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 absolute right-3 text-gray-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 15l5-5m0 0l-5-5m5 5H4"
-          />
-        </svg>
+        <button type="submit" className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none">
+        <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10 17a7 7 0 01-7-7 7 7 0 0114 0 7 7 0 01-7 7zM21 21l-4-4"
+      />
+    </svg>
+        </button>
       </form>
      <SearchResultList searchQuery={searchQuery} searchResults={searchResults} />
     </div>

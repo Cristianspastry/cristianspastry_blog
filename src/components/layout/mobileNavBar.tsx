@@ -1,120 +1,81 @@
-// components/MobileNavbar.tsx
 "use client";
-import React, { useState } from 'react'
-import { navLinks } from '@/utils/const';
-import Link from 'next/link';
 
-const MobileNavbar: React.FC<{ navLinks: { href: string; label: string }[]; onClose: () => void }> = ({ navLinks, onClose }) => {
-  const handleLinkClick = () => {
-    onClose(); // Chiudi il menu quando viene cliccato un link
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { metaData, navLinks, routes } from '../../utils/const';
+import { useRouter } from 'next/navigation';
+import userImg from '../../../assets/img/user.png';
+import Image from 'next/image';
+import { UrlObject } from 'url';
+import { CloseIcon, HamburgerIcon } from '@/utils/icons';
+
+const MobileNavBar = ({user,userAvatar} : {user:any,userAvatar:any}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
   return (
-    <div className="md:hidden">
-      <div className="bg-white px-4 py-2">
-        <div className="flex justify-between items-center mb-4">
-          <div> {/* Spazio vuoto per centrare il titolo */}
-          </div>
-          <div>
-            <button onClick={onClose} className="text-gray-500 hover:text-black focus:outline-none" aria-label="Chiudi">
-            <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6 cursor-pointer"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      onClick={handleLinkClick}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg> {/* Icona "X" per chiudere il menu */}
-            </button>
-          </div>
-        </div>
-        {navLinks.map((link, index) => (
-          <Link key={index} href={link.href} className="block text-black text-lg py-2" onClick={handleLinkClick}>
-            {link.label}
+    <div className="max-w-screen-lg mx-auto">
+      <nav className="flex items-center justify-between bg-white shadow-sx py-6 px-6 relative">
+        <div className="flex items-center md:hidden">
+          
+          <Link href="/" className="text-black text-3xl font-semibold">
+            {metaData.title?.toString()}
           </Link>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default MobileNavbar;
-
-
-
-
-
-
-
-
-/*
-export const MobileNavbar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-  return (
-    <div className={`fixed top-0 right-0 h-full w-2/3 bg-white shadow-md transition-transform transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-      <div className="flex flex-col justify-between h-full py-8 px-4">
-        <div>
-          <ul>
-            {navLinks.map((link, index) => (
-              <li key={index} className="my-2">
-                <Link href={link.href} className='text-black text-lg'>
-                  {link.label}
+        </div>
+        <div className="md:hidden">
+          <button onClick={toggleMenu}>
+            {menuOpen ?  <CloseIcon/>: <HamburgerIcon />}
+          </button>
+        </div>
+        <div className={`absolute top-0 right-0 bg-white h-screen w-80 shadow-md ${menuOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-10 md:hidden`}>
+          <div className="flex flex-col h-full justify-between">
+            <div>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <button onClick={closeMenu}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-black"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="py-4 px-6">
+                {navLinks.map((link: { href: string | UrlObject; label: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }, index: React.Key | null | undefined) => (
+                  <Link key={index} href={link.href} className='text-black text-lg block py-2'>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="pb-8 px-6">
+              {user ? (
+                <Link href={routes.profile}>
+                  {userAvatar ? (
+                    <img src={userAvatar} alt="Avatar" className="h-12 w-12 rounded-full border-2 border-blue-500" />
+                  ) : (
+                    <Image width={45} height={45} src={userImg} alt="Avatar" className="rounded-full border-2 border-blue-500" />
+                  )}
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ) : (
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => router.push(routes.login)}>Accedi</button>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="border-t border-gray-300 pt-8">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Accedi</button>
-        </div>
-      </div>
+      </nav>
     </div>
   );
 };
 
-export default MobileNavbar;
-
-
-// components/MobileMenuIcon.tsx
-// components/MobileMenuIcon.tsx
-export const MobileMenuIcon: React.FC<{ onClick: () => void; isOpen: boolean }> = ({ onClick, isOpen }) => {
-  return (
-    <div className="cursor-pointer" onClick={onClick}>
-      {isOpen ? (
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className={"w-8 h-8 fill-inherit"}
-        >
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
-
-      )
-        : (
-
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className={"w-10 h-10 items-center fill-inherit"}
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-        )}
-    </div>
-  );
-};
-*/
-
+export default MobileNavBar;

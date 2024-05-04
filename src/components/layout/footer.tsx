@@ -1,12 +1,12 @@
 import { footerLinks, metaData, socialIcons } from "@/utils/const";
-import {FacebookIcon, InstagramIcon,TiktokIcon} from "@/utils/icons";
 import Link from "next/link";
 import { getYear } from "@/utils/utils";
+import Image from "next/image";
 
 const Footer: React.FC = () => {
  
   return (
-    <footer className=" py-8 bottom-0 left-0 right-0 z-10">
+    <footer className=" py-8 bottom-0 left-0 right-0 z-10 ">
       <div className="max-w-screen-lg mx-auto px-4">
         <div className="flex justify-between items-center">
           <div>
@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
             {
               socialIcons.map((icon, index) => (
                 <Link key={index} href={icon.link} className="text-gray-600 hover:text-gray-800" aria-label={icon.ariaLabel}>
-                  {icon.icon}
+                  <Image src={icon.icon} alt={icon.ariaLabel} width={24} height={24} />
                 </Link>
               ))
             }
