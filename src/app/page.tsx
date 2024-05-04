@@ -12,14 +12,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Home() {
-   const [user] = useAuthState(auth);
-   const router = useRouter();
    const [recipes, setRecipes] = useState<Ricetta[]>([]);
-
-
-   if(!user) {
-     redirect(routes.login);
-   }
 
    useEffect(() => {
      const getRecipes = async () => {
