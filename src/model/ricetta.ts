@@ -6,7 +6,7 @@ import { Category } from "./category";
 
   
 export interface Ricetta {
-    id: string;
+    id: string | number;
     titolo: string;
     categoria: Category;
     descrizione: string;

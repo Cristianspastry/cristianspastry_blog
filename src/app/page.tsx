@@ -10,30 +10,35 @@ import { fetchRecipes } from "@/utils/service";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {recipesData} from '../app/data';
 
 export default function Home() {
    const [recipes, setRecipes] = useState<Ricetta[]>([]);
 
    useEffect(() => {
-     const getRecipes = async () => {
-       try {
-         const recipesData = await fetchRecipes();
-         setRecipes(recipesData);
-       } catch (error) {
-         console.error('Errore nel recupero delle ricette:', error);
-       }
-     };
-     getRecipes();
+
+      // sistemare db superamento gb [firebase]
+      // recupero ricette
+      /*const getRecipes = async () => {
+        try {
+          const recipesData = await fetchRecipes();
+          setRecipes(recipesData);
+        } catch (error) {
+          console.error('Errore nel recupero delle ricette:', error);
+        }
+      };
+      getRecipes();*/
+
    }, []);
 
-  
+
    return (
       <main className="max-w-screen-lg mx-auto px-4 py-8">
          <div className=" flex justify-between">
-         <h1 className="text-3xl font-semibold text-left mb-8">Ultime Ricette</h1>
-         <SearchBar recipes={recipes}/>
+            <h1 className="text-3xl font-semibold text-left mb-8">Ultime Ricette</h1>
+            <SearchBar recipes={recipes} />
          </div>
-         <LastRecipesSections recipes={recipes} />
+         <LastRecipesSections recipes={recipesData} />
       </main>
    );
 }
