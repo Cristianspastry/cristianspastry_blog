@@ -1,32 +1,47 @@
 "use client";
 import { Recipe } from '@/core/domain/entities/Recipe';
+import { DeleteRecipeByidUseCase } from '@/core/useCases/recipes/DeleteRecipeByidUseCase';
 import { GetAllRecipeUseCase } from '@/core/useCases/recipes/GetAllRecipeUseCase';
 import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
 import { AdminRoutes } from '@/routes/Routes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, {useEffect, useState } from 'react';
+import Loader from '../../loader';
 
 const RecipeList = () => {
    // get all recipes
 
   const [recipes, setRecipes] = useState< Recipe[] >([]);
   const [loading, setLoading] = useState(false);
-
+  const recipeRepository = new FirebaseRecipeRepository();
+  const getAllRecipeUseCase = new GetAllRecipeUseCase(recipeRepository);
+  const router = useRouter();
   useEffect(() => {
     setLoading(true);
-    const getAllRecipeUseCase = new GetAllRecipeUseCase(new FirebaseRecipeRepository());
     getAllRecipeUseCase.execute().then((recipes) => {
       setRecipes(recipes);
       setLoading(false);
     });
-  }, []);
+  }, [
+  ]);
 
-  const deleteRecipe = (id?: string ) => {
-    alert(`Elimina Ricetta ${id}`);
+  const deleteRecipe = async (id?: string ) => {
+    const recipeRepository = new FirebaseRecipeRepository();
+    const deleteRecipeUseCase =  new DeleteRecipeByidUseCase(recipeRepository);
+    const result = confirm(`Sei sicuro di voler eliminare la ricetta ${id}?`);
+    if (result) {     
+      deleteRecipeUseCase.execute(id!).then(() => {
+        alert(`Ricetta ${id} eliminata`);
+         router.refresh();
+      });
+    } else {
+      alert(`Ricetta ${id} non eliminata`);
+    }
   };
 
   if (loading) {
-    return <p>Caricamento delle ricette...</p>;
+    return <Loader />;
   }
 
   if (recipes.length === 0) {

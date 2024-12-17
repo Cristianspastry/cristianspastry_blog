@@ -1,5 +1,5 @@
 "use client";
-import { APP_NAME, SOCIAL_MEDIA_LINK } from '@/core/common/utils/Constants';
+import { APP_NAME, AUTHOR, SOCIAL_MEDIA_LINK } from '@/core/common/utils/Constants';
 import { BlogRoutes } from '@/routes/Routes';
 import Link from 'next/link';
 
@@ -10,14 +10,19 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     {/* Copyright & Links */}
                     <div className="text-center md:text-left">
-                        <h2 className="text-2xl font-bold mb-4">
+                        <h2 className="text-2xl font-playfair_display mb-4">
                             {APP_NAME}
                         </h2>
                         <p className="text-sm opacity-80 mb-4">
                             &copy; {new Date().getFullYear()} Tutti i diritti riservati.
                         </p>
                         <ul className="flex justify-center md:justify-start space-x-4">
-                            {Object.values(BlogRoutes).map((route) => (
+                            {Object.values(BlogRoutes)
+                            .filter(route =>
+                                // Esclude "Admin" solo in produzione
+                                (process.env.NODE_ENV !== 'production' || route.name !== 'Admin') &&
+                                route.name !== 'Search' // Filtra sempre "Search"
+                            ).map((route) => (
                                 <li key={route.name}>
                                     <Link
                                         href={route.link}
@@ -70,7 +75,7 @@ export default function Footer() {
 
                 {/* Divisore */}
                 <div className="border-t border-gray-500 pt-6 text-center text-sm opacity-80">
-                    {"Realizzato con ❤️ da Cristian's Pastry"}
+                    <p className='font-playfair_display'>{" Realizzato con ❤️ da  " + AUTHOR}</p>
                 </div>
             </div>
         </footer>

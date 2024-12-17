@@ -4,9 +4,7 @@
 import { RecipeForm } from '@/presentation/components/(ADMIN)/recipeForm/RecipeForm'
 import React from 'react'
 
-type Props = {}
-
-const AddRecipe = (props: Props) => {
+const AddRecipe = () => {
   return (
     <>
         <RecipeForm/>

@@ -1,16 +1,17 @@
-import { CATEGORIES, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/core/common/utils/Constants';
-import { RecipeFormData, useRecipeForm } from '@/presentation/hook/useRecipeForm';
+'use client'
+
+import { CATEGORIES, COST, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/core/common/utils/Constants';
+import { Recipe } from '@/core/domain/entities/Recipe';
+import { useRecipeForm } from '@/presentation/hook/useRecipeForm';
 import React from 'react';
 
 interface RecipeFormProps {
-  existingRecipe?: RecipeFormData;
+  existingRecipe?: Recipe | null;
 }
 
 export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    form: { register, formState: { errors } },
     onSubmit,
     useSimpleIngredientList,
     setUseSimpleIngredientList,
@@ -26,10 +27,14 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
     addStep,
     removeStep,
     updateStep,
-  } = useRecipeForm(existingRecipe);
+    tips,
+    addTip,
+    removeTip,
+    updateTip,    
+  } = useRecipeForm(existingRecipe || null);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto p-6 space-y-6">
+    <form onSubmit={onSubmit} className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Titolo */}
       <div>
         <label htmlFor="title" className="block font-medium">Titolo</label>
@@ -52,6 +57,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
           readOnly
           className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed"
         />
+        {errors.slug && <span className="text-red-500">{errors.slug.message}</span>}
       </div>
 
       {/* Categoria */}
@@ -66,6 +72,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
+        {errors.category && <span className="text-red-500">{errors.category.message}</span>}
       </div>
 
       {/* Immagine */}
@@ -73,10 +80,11 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
         <label htmlFor="image" className="block font-medium">Immagine</label>
         <input
           {...register("image")}
-          type="text"
+          type="url"
           id="image"
           className="w-full p-2 border rounded"
         />
+        {errors.image && <span className="text-red-500">{errors.image.message}</span>}
       </div>
 
       {/* Descrizione */}
@@ -102,6 +110,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
             <option key={difficulty} value={difficulty}>{difficulty}</option>
           ))}
         </select>
+        {errors.difficulty && <span className="text-red-500">{errors.difficulty.message}</span>}
       </div>
 
       {/* Tempi di Preparazione */}
@@ -123,6 +132,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
             ))}
           </select>
         </div>
+        {errors.prepTime && <span className="text-red-500">{errors.prepTime.message}</span>}
       </div>
 
       {/* Tempi di Cucina */}
@@ -144,6 +154,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
             ))}
           </select>
         </div>
+        {}
       </div>
 
       {/* Dimensione Stampo */}
@@ -168,16 +179,19 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
         />
       </div>
 
-      {/* Costo */}
+      {/* Costo  */}
       <div>
         <label htmlFor="cost" className="block font-medium">Costo (€)</label>
-        <input
-          {...register("cost", { required: true })}
-          type="number"
+        <select
+          {...register("cost")}
           id="cost"
-          step="0.01"
           className="w-full p-2 border rounded"
-        />
+        >
+          {COST.map((cost) => (
+            <option key={cost} value={cost}>{cost}</option>
+          ))}
+        </select>
+        {errors.cost && <span className="text-red-500">{errors.cost.message}</span>}
       </div>
 
       {/* Ingredienti */}
@@ -196,10 +210,10 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
       {useSimpleIngredientList ? (
         <div className="mb-4">
           <h3 className="font-bold mb-2">Ingredienti</h3>
-          {simpleIngredients.map((ingredient, index) => (
+          {simpleIngredients && simpleIngredients.map((ingredient, index) => (
             <div key={index} className="flex mb-2 items-center">
               <input
-                type="text"
+                type="number"
                 value={ingredient.quantity}
                 onChange={(e) => handleIngredientChange(0, index, 'quantity', e.target.value)}
                 className="p-2 border rounded mr-2 w-1/4"
@@ -249,7 +263,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
       ) : (
         <div className="mb-4">
           <h3 className="font-bold mb-2">Gruppi di Ingredienti</h3>
-          {ingredientGroups.map((group, groupIndex) => (
+          {ingredientGroups && ingredientGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="mb-4 p-4 border rounded">
               <div className="flex items-center mb-2">
                 <input
@@ -267,7 +281,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
                   Rimuovi gruppo
                 </button>
               </div>
-              {group.ingredients.map((ingredient, ingredientIndex) => (
+              {group.ingredients && group.ingredients.map((ingredient, ingredientIndex) => (
                 <div key={ingredientIndex} className="flex mb-2 items-center">
                   <input
                     type="text"
@@ -282,7 +296,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
                     className="p-2 border rounded mr-2 w-1/4"
                   >
                     <option value="">Unità</option>
-                    {QUANTITY_TYPE  .map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                    {QUANTITY_TYPE.map(unit => <option key={unit} value={unit}>{unit}</option>)}
                   </select>
                   <select
                     value={ingredient.name}
@@ -290,7 +304,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
                     className="p-2 border rounded mr-2 w-1/4 flex-grow"
                   >
                     <option value="">Seleziona un ingrediente</option>
-                    {Object.entries( INGREDIENTS).map(([categoria, lista]) => (
+                    {Object.entries(INGREDIENTS).map(([categoria, lista]) => (
                       <optgroup key={categoria} label={categoria}>
                         {lista.map((ingrediente, idx) => (
                           <option key={`${categoria}-${ingrediente}-${idx}`} value={ingrediente}>
@@ -325,13 +339,15 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
           >
             Aggiungi gruppo di ingredienti
           </button>
+        {errors.ingredients && <p className="text-red-500">{errors.ingredients.message}</p>}
         </div>
+        
       )}
 
       {/* Step della Ricetta */}
       <div className="mb-4">
         <h3 className="font-bold mb-2">Step della Ricetta</h3>
-        {steps.map((step, index) => (
+        {steps && steps.map((step, index) => (
           <div key={index} className="flex mb-2 items-center">
             <textarea
               value={step}
@@ -355,17 +371,37 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
         >
           Aggiungi step
         </button>
+        {errors.steps && <p className="text-red-500">{errors.steps.message}</p>}
       </div>
 
       {/* Consigli */}
-      <div>
-        <label htmlFor="tips" className="block font-medium">Consigli</label>
-        <input
-          {...register("tips")}
-          type="text"
-          id="tips"
-          className="w-full p-2 border rounded"
-        />
+      <div className="mb-4">
+        <h3 className="font-bold mb-2">Consigli</h3>
+        {tips && tips.map((tip, index) => (
+          <div key={index} className="flex mb-2 items-center">
+            <textarea
+              value={tip}
+              onChange={(e) => updateTip(index, e.target.value)}
+              className="p-2 border rounded mr-2 flex-grow"
+              placeholder={`Consiglio ${index + 1}`}
+            />
+            <button
+              type="button"
+              onClick={() => removeTip(index)}
+              className="p-2 bg-red-500 text-white rounded"
+            >
+              Rimuovi
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addTip}
+          className="mt-2 p-2 bg-blue-500 text-white rounded"
+        >
+          Aggiungi consiglio
+        </button>
+        {errors.tips && <p className="text-red-500">{errors.tips.message}</p>}
       </div>
 
       {/* Conservazione */}
@@ -377,6 +413,40 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
           id="conservation"
           className="w-full p-2 border rounded"
         />
+        {errors.conservation && <p className="text-red-500">{errors.conservation.message}</p>}
+      </div>
+
+      {/* Check box (featured,popular,recent,special) */}
+      <div className=" space-y-2 space-x-4 flex">
+        <label htmlFor="featured" className="block font-medium">In evidenza</label>
+        <input
+          {...register("isFeatured")}
+          type="checkbox"
+          id="featured"
+          className="w-full p-2 border rounded"
+        />
+        <label htmlFor="popular" className="block font-medium">Popolare</label>
+        <input
+          {...register("isPopular")}
+          type="checkbox"
+          id="popular"
+          className="w-full p-2 border rounded"
+        />
+        <label htmlFor="recent" className="block font-medium">Recente</label>
+        <input
+          {...register("isRecent")}
+          type="checkbox"
+          id="recent"
+          className="w-full p-2 border rounded"
+        />
+        <label htmlFor="special" className="block font-medium">Speciale</label>
+        <input
+          {...register("isSpecial")}
+          type="checkbox"
+          id="special"
+          className="w-full p-2 border rounded"
+        />
+        { errors.isFeatured && <p className="text-red-500">{errors.isFeatured.message}</p>}
       </div>
 
       {/* Data */}
@@ -388,6 +458,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
           id="date"
           className="w-full p-2 border rounded"
         />
+        {errors.date && <p className="text-red-500">{errors.date.message}</p>}
       </div>
 
       {/* Submit */}
@@ -397,4 +468,6 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
     </form>
   );
 };
+
+export default RecipeForm;
 

@@ -1,76 +1,25 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useForm,SubmitHandler } from 'react-hook-form';
-import { CATEGORIES, DIFFICULTY, TIME_UNITY } from '@/core/common/utils/Constants';
-import { Recipe } from '@/types/Recipe';
+"use client"
+import { Recipe } from '@/core/domain/entities/Recipe';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm, SubmitHandler,} from 'react-hook-form';
+import { Ingredient, IngredientGroup } from '@/core/domain/entities/Recipe';
+import { CATEGORIES,DIFFICULTY, TIME_UNITY } from '@/core/common/utils/Constants';
 import { SaveRecipeUseCase } from '@/core/useCases/recipes/SaveRecipeUseCase';
 import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
+import generateSlug from '@/core/common/utils/generateSlug';
+import { AdminRoutes } from '@/routes/Routes';
+import { useRouter } from 'next/navigation';
 
 
-type Ingredient = {
-  quantity: string;
-  unit: string;
-  name: string;
-};
-
-type IngredientGroup = {
-  name: string;
-  ingredients: Ingredient[];
-};
-
-export type RecipeFormData = {
-  id?: string;
-  title: string;
-  slug: string;
-  category: string;
-  image: string;
-  description: string;
-  difficulty: string;
-  prepTime: { value: number; unit: string };
-  cookingTime: { value: number; unit: string };
-  moldSize: string;
-  portions: number;
-  cost: number;
-  steps: string[];
-  tips: string;
-  conservation: string;
-  date: string;
-  ingredients?: Ingredient[] | IngredientGroup[];
-};
-
-
- const generateSlug = (slug: string|undefined) => {
-    // Mappa di caratteri accentati ai loro equivalenti non accentati
-    const accentMap: { [key: string]: string } = {
-      'à': 'a', 'á': 'a', 'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a',
-      'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e',
-      'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
-      'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
-      'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
-      'ý': 'y', 'ÿ': 'y',
-      'ñ': 'n',
-      'ç': 'c'
-    };
-  
-    // Normalizza il testo sostituendo i caratteri accentati
-    const normalizedText = slug?.toLowerCase().split('').map(char => {
-      return accentMap[char] || char;
-    }).join('');
-  
-    // Sostituisce spazi con trattini e rimuove caratteri non desiderati
-    return normalizedText!
-      .replace(/\s+/g, '-')           // sostituisce spazi con trattini
-      .replace(/[^a-z0-9-]/g, '')     // rimuove caratteri non alfanumerici eccetto trattini
-      .replace(/-+/g, '-')            // rimuove trattini multipli consecutivi
-      .replace(/^-|-$/g, '');         // rimuove trattini all'inizio e alla fine
-  };
-
-export const useRecipeForm = (existingRecipe?: RecipeFormData) => {
+export const useRecipeForm = (existingRecipe?: Recipe | null) => {
   const [useSimpleIngredientList, setUseSimpleIngredientList] = useState(true);
   const [simpleIngredients, setSimpleIngredients] = useState<Ingredient[]>([{ quantity: '', unit: '', name: '' }]);
   const [ingredientGroups, setIngredientGroups] = useState<IngredientGroup[]>([{ name: '', ingredients: [{ quantity: '', unit: '', name: '' }] }]);
   const [steps, setSteps] = useState<string[]>(['']);
+  const [tips, setTips] = useState<string[]>(['']); // New state for tips
+  const router = useRouter();
 
-  const form = useForm<RecipeFormData>({
+  const form = useForm<Recipe>({
     defaultValues: existingRecipe || {
       title: '',
       slug: '',
@@ -82,10 +31,14 @@ export const useRecipeForm = (existingRecipe?: RecipeFormData) => {
       cookingTime: { value: 0, unit: TIME_UNITY[0] },
       moldSize: '',
       portions: 1,
-      cost: 0,
+      cost: 'Basso',
       steps: [''],
-      tips: '',
+      tips: [''], // Initialize with an empty tip
       conservation: '',
+      isFeatured: false,
+      isPopular: false,
+      isRecent: false,
+      isSpecial: false,
       date: new Date().toISOString().split('T')[0],
     },
   });
@@ -102,6 +55,23 @@ export const useRecipeForm = (existingRecipe?: RecipeFormData) => {
         }
       }
       setSteps(existingRecipe.steps || ['']);
+      setTips(existingRecipe.tips || ['']); // Set tips from existing recipe
+    }
+  }, [existingRecipe]);
+
+  useEffect(() => {
+    if (existingRecipe) {
+      if (Array.isArray(existingRecipe.ingredients) && existingRecipe.ingredients.length > 0) {
+        if ('name' in existingRecipe.ingredients[0]) {
+          setUseSimpleIngredientList(false);
+          setIngredientGroups(existingRecipe.ingredients as IngredientGroup[]);
+        } else {
+          setUseSimpleIngredientList(true);
+          setSimpleIngredients(existingRecipe.ingredients as Ingredient[]);
+        }
+      }
+      setSteps(existingRecipe.steps || ['']);
+      setTips(existingRecipe.tips || ['']); // Set tips from existing recipe
     }
   }, [existingRecipe]);
 
@@ -177,36 +147,79 @@ export const useRecipeForm = (existingRecipe?: RecipeFormData) => {
     });
   }, []);
 
-  // Genera lo slug dal titolo
+  const addTip = useCallback(() => {
+    setTips(prev => {
+      const newTips = [...prev, ''];
+      form.setValue('tips', newTips);
+      return newTips;
+    });
+  }, [form]);
+
+  const removeTip = useCallback((index: number) => {
+    setTips(prev => {
+      const newTips = prev.filter((_, i) => i !== index);
+      form.setValue('tips', newTips);
+      return newTips;
+    });
+  }, [form]);
+
+  const updateTip = useCallback((index: number, value: string) => {
+    setTips(prev => {
+      const newTips = [...prev];
+      newTips[index] = value;
+      form.setValue('tips', newTips);
+      return newTips;
+    });
+  }, [form]);
+
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name === 'title') {
-        const slug = generateSlug(value?.title);
+        const slug = generateSlug(value.title || '');
         form.setValue('slug', slug);
+      }
+      if (name === 'tips') {
+        setTips((value.tips || []).filter((tip): tip is string => typeof tip === 'string'));
       }
     });
     return () => subscription.unsubscribe();
   }, [form]);
 
+  const resetForm = useCallback(() => {
+    form.reset();
+    setSimpleIngredients([{ quantity: '', unit: '', name: '' }]);
+    setIngredientGroups([{ name: '', ingredients: [{ quantity: '', unit: '', name: '' }] }]);
+    setSteps(['']);
+    setTips(['']);
+    setUseSimpleIngredientList(true);
+  }, [form]);
+
   const onSubmit: SubmitHandler<Recipe> = async (data) => {
-    const recipeRepository = new FirebaseRecipeRepository();
-    const saveRecipeUseCase = new SaveRecipeUseCase(recipeRepository);
+    const firebaseRecipeRepository = new FirebaseRecipeRepository();
+    const saveRecipeUseCase = new SaveRecipeUseCase(firebaseRecipeRepository);
     try {
       const recipeData = {
         ...data,
         ingredients: useSimpleIngredientList ? simpleIngredients : ingredientGroups,
         steps: steps,
+        tips: (data.tips || []).filter((tip): tip is string => typeof tip === 'string'),
       };
-
+      console.log('Salvataggio ricetta:', recipeData);
       await saveRecipeUseCase.execute(recipeData);
       alert(existingRecipe ? 'Ricetta aggiornata con successo!' : 'Nuova ricetta aggiunta con successo!');
+      router.push(AdminRoutes.Recipes.link)
     } catch (error) {
       console.error('Errore durante il salvataggio della ricetta:', error);
       alert('Si è verificato un errore durante il salvataggio della ricetta. Riprova.');
     }
+
+    resetForm();
   };
+
+
+
   return {
-    ...form,
+    form,
     useSimpleIngredientList,
     setUseSimpleIngredientList,
     simpleIngredients,
@@ -221,7 +234,12 @@ export const useRecipeForm = (existingRecipe?: RecipeFormData) => {
     addStep,
     removeStep,
     updateStep,
-    onSubmit,
+    tips, // Expose tips state
+    addTip, // Expose addTip function
+    removeTip, // Expose removeTip function
+    updateTip, // Expose updateTip function
+    onSubmit: form.handleSubmit(onSubmit),
+ 
   };
 };
 

@@ -12,8 +12,8 @@ export const BlogRoutes = {
     },
     Recipes: {
         name: 'Recipes',
-        link: '/recipe',
-        subLinks : '/recipe/'
+        link: '/ricette',
+        subLinks : '/ricette/'
     },
     Tips: {
         name: 'Tips',
@@ -23,6 +23,10 @@ export const BlogRoutes = {
         name: 'About',
         link: '/about'
     },
+     Admin : {
+        name : 'Admin',
+        link : '/admin',
+     }
 }
 
 
@@ -43,5 +47,9 @@ export const AdminRoutes = {
     Settings: {
         name: 'Settings',
         link: 'admin/settings'
+    },
+    TornaAlBlog: {
+        name: 'Torna al Blog',
+        link: '/'
     },
 }

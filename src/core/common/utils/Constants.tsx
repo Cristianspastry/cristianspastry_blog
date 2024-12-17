@@ -1,4 +1,4 @@
-
+export const AUTHOR = "Cristian"
 export const APP_NAME = "Cristian's pastry"
 
 export const SOCIAL_MEDIA_LINK = [
@@ -62,6 +62,8 @@ export const CATEGORIES = [
   
   export const QUANTITY_TYPE = ['g', 'ml', 'Kg', 'q.b.', 'L', 'cucchiani', 'pizzico', 'pizzichi'];
   
+  export const COST = ["Basso","Medio","Alto"]
+
   export const INGREDIENTS = {
     FARINE_E_AMIDI: [
       "Farina 00",
