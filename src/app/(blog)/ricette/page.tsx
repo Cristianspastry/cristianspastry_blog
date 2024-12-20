@@ -1,85 +1,65 @@
-import { Suspense } from 'react'
-import { Metadata } from 'next'
-import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository'
-import { Recipe, RecipeSortOption } from '@/core/domain/entities/Recipe'
-import { GetFilteredRecipesUseCase } from '@/core/useCases/recipes/GetFilteredRecipesUseCase'
-import RecipeFilters from '@/presentation/components/(BLOG)/filters/RecipeFilters'
-import RecipeSorter from '@/presentation/components/(BLOG)/sorter/RecipeSorter'
-import RecipeList from '@/presentation/components/(ADMIN)/list/RecipeList'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Tutte le ricette | Cristian\'s Pastry',
-  description: 'Esplora la nostra vasta collezione di ricette di pasticceria, dai classici alle creazioni innovative',
-}
+import { useState, useEffect } from "react"
+import { Recipe } from "@/core/domain/entities/Recipe"
+import RecipeFilter from "@/presentation/components/(BLOG)/filters/RecipeFilter"
+import RecipeGrid from "@/presentation/components/(BLOG)/grid/RecipeGrid"
+import { FirebaseRecipeRepository } from "@/infrastructure/repositories/FirebaseRecipeRepository"
+import { GetAllRecipeUseCase } from "@/core/useCases/recipes/GetAllRecipeUseCase"
+import { metadata,  } from "./metadata"
 
-export default async function RecipesPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
-  const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1
-  const limit = 12 // Numero di ricette per pagina
-  const difficulty = typeof searchParams.difficulty === 'string' ? searchParams.difficulty : undefined
-  const category = typeof searchParams.category === 'string' ? searchParams.category : undefined
-  const prepTime = typeof searchParams.prepTime === 'string' ? parseInt(searchParams.prepTime, 10) : undefined
-  const sortBy = typeof searchParams.sort === 'string' ? searchParams.sort : 'newest'
+export { metadata };
 
-  const recipeRepository = new FirebaseRecipeRepository()
-  const getFilteredRecipesUseCase = new GetFilteredRecipesUseCase(recipeRepository)
+/**
+ * Pagina delle ricette
+ *
+ * Questa pagina mostra l'elenco di tutte le ricette presenti nel database.
+ * La pagina include un filtro per selezionare le ricette per categoria e
+ * una griglia che mostra le ricette in base alla selezione.
+ *
+ * L'elenco delle ricette viene recuperato dal database all'avvio della
+ * pagina. Se l'operazione di recupero fallisce, viene mostrato un messaggio
+ * di errore.
+ *
+ * @returns {JSX.Element} La pagina delle ricette
+ */
 
-  const sortOption: RecipeSortOption = {
-    field: getSortField(sortBy),
-    direction: getSortDirection(sortBy)
+export default function RecipesPage() {
+  const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [activeCategory, setActiveCategory] = useState('Tutte')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const recipeRepository = new FirebaseRecipeRepository()
+        const getAllRecipeUseCase = new GetAllRecipeUseCase(recipeRepository)
+        const fetchedRecipes = await getAllRecipeUseCase.execute()
+        setRecipes(fetchedRecipes)
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchRecipes()
+  }, [])
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category)
   }
 
-  const { recipes, totalCount } = await getFilteredRecipesUseCase.execute(
-    { difficulty, category, prepTime },
-    sortOption,
-    { page, limit }
-  )
+  if (isLoading) {
+    return <div className="container mx-auto py-8">Caricamento ricette...</div>
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Tutte le nostre ricette</h1>
-      <div className="flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-1/4">
-          <RecipeFilters />
-        </aside>
-        <main className="w-full lg:w-3/4">
-          <div className="mb-6">
-            <RecipeSorter />
-          </div>
-          <Suspense fallback={<div className="text-center">Caricamento ricette...</div>}>
-            <RecipeList initialRecipes={recipes} totalRecipes={totalCount} page={page} limit={limit} />
-          </Suspense>
-        </main>
+    <div className="container mx-auto py-8">
+      <div className="space-y-6">
+        <RecipeFilter onCategoryChange={handleCategoryChange} />
+        <RecipeGrid recipes={recipes} activeCategory={activeCategory} />
       </div>
     </div>
   )
 }
-
-function getSortField(sortBy: string): keyof Recipe {
-  switch (sortBy) {
-    case 'oldest':
-    case 'newest':
-      return 'createdAt'
-    case 'popular':
-      return 'views'
-    case 'difficulty_asc':
-    case 'difficulty_desc':
-      return 'difficulty'
-    default:
-      return 'createdAt'
-  }
-}
-
-function getSortDirection(sortBy: string): 'asc' | 'desc' {
-  switch (sortBy) {
-    case 'oldest':
-    case 'difficulty_asc':
-      return 'asc'
-    default:
-      return 'desc'
-  }
-}
-

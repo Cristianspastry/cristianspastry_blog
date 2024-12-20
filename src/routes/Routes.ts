@@ -11,7 +11,7 @@ export const BlogRoutes = {
         link: '/search'
     },
     Recipes: {
-        name: 'Recipes',
+        name: 'Ricette',
         link: '/ricette',
         subLinks : '/ricette/'
     },

@@ -17,7 +17,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe,}) => {
             src={recipe.image}
             alt={`${recipe.title} IMMAGINE NON TROVATA`}
             fill
-            className="object-cover"
+            className="object-cover aspect-video"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
     </div>

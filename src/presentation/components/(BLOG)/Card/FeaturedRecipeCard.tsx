@@ -10,7 +10,7 @@ export default function FeaturedRecipeCard({ recipe }: RecipeCardProps) {
   return (
     <div className="relative aspect-[16/9]">
       <Image
-        src={recipe.image}
+        src={recipe.image || ''}
         alt={recipe.title}
         fill
         className="object-cover rounded-lg"

@@ -1,5 +1,7 @@
 export const AUTHOR = "Cristian"
 export const APP_NAME = "Cristian's pastry"
+export const APP_DESCRIPTION = "Cristian's pastry"
+export const EMAIL = "cristianspastry@gmail.com"
 
 export const SOCIAL_MEDIA_LINK = [
   {

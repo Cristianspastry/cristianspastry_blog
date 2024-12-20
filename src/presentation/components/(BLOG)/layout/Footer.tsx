@@ -1,5 +1,5 @@
 "use client";
-import { APP_NAME, AUTHOR, SOCIAL_MEDIA_LINK } from '@/core/common/utils/Constants';
+import { APP_NAME, AUTHOR, EMAIL, SOCIAL_MEDIA_LINK } from '@/core/common/utils/Constants';
 import { BlogRoutes } from '@/routes/Routes';
 import Link from 'next/link';
 
@@ -64,12 +64,10 @@ export default function Footer() {
                                 href="mailto:info@cristianspastry.com"
                                 className="text-white hover:underline"
                             >
-                                info@cristianspastry.com
+                                {EMAIL}
                             </Link>
                         </p>
-                        <p className="text-sm opacity-80">
-                            Tel: <a href="tel:+39123456789" className="text-white hover:underline">+39 123 456 789</a>
-                        </p>
+                        
                     </div>
                 </div>
 
