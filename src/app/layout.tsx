@@ -1,8 +1,11 @@
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { getLanguage } from "@/config/lenguage";
 import { Inter , Playfair_Display } from "next/font/google";
+import  ReduxProvider  from "@/presentation/components/ReduxProvider";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -42,7 +45,9 @@ export default function RootLayout({
       <body
         className={`${inter} ${playfair_display} antialiased`}
       >
+       <ReduxProvider>
         {children}
+       </ReduxProvider>
       </body>
     </html>
   );

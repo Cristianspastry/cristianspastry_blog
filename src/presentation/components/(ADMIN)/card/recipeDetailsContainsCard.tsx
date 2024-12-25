@@ -1,8 +1,8 @@
 "use client"
 
-import { Ingredient, IngredientGroup, Recipe } from '@/core/domain/entities/Recipe';
-import { DeleteRecipeByidUseCase } from '@/core/useCases/recipes/DeleteRecipeByidUseCase';
-import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
+import { Ingredient, IngredientGroup, Recipe } from '@/core/entities/Recipe';
+import { DeleteRecipeByidUseCase } from '@/core/use-cases/recipes/DeleteRecipeByidUseCase';
+import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
 import { useRouter } from 'next/navigation';
 import React, {  useState } from 'react'
 
@@ -121,7 +121,7 @@ const RecipeDetailsContainsCard = () => {
                     <h3 className="text-lg font-semibold">Additional Information</h3>
                     <p><strong>Mold Size:</strong> {recipe.moldSize}</p>
                     <p><strong>Conservation:</strong> {recipe.conservation}</p>
-                    <p><strong>Date:</strong> {recipe.date}</p>
+                    <p><strong>Date:</strong> {recipe.date?.toString()}</p>
                 </div>
 
                 <div className="mt-6 flex justify-end space-x-4">

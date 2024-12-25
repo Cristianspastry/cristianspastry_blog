@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/core/common/utils/Constants';
+import { APP_NAME } from '@/shared/utils/Constants';
 import Link from 'next/link';
 import React from 'react'
 

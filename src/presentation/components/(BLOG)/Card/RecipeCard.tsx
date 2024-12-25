@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Recipe } from '@/core/domain/entities/Recipe'
+import { Recipe } from '@/core/entities/Recipe'
 import { DollarSign, Clock } from 'lucide-react'
 import { BlogRoutes } from '@/routes/Routes'
 interface RecipeCardProps {

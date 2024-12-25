@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Recipe } from '@/core/domain/entities/Recipe'
+import { Recipe } from '@/core/entities/Recipe'
 import RecipeCard from '../Card/RecipeCard'
 import Pagination from '../pagination/Pagination'
 

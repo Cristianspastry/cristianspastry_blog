@@ -1,8 +1,8 @@
 "use client";
-import { Recipe } from '@/core/domain/entities/Recipe';
-import { DeleteRecipeByidUseCase } from '@/core/useCases/recipes/DeleteRecipeByidUseCase';
-import { GetAllRecipeUseCase } from '@/core/useCases/recipes/GetAllRecipeUseCase';
-import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
+import { Recipe } from '@/core/entities/Recipe';
+import { DeleteRecipeByidUseCase } from '@/core/use-cases/recipes/DeleteRecipeByidUseCase';
+import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
+import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
 import { AdminRoutes } from '@/routes/Routes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

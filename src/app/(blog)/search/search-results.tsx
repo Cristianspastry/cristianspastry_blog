@@ -1,6 +1,6 @@
-import { Recipe } from '@/core/domain/entities/Recipe';
-import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
-import { GetAllRecipeUseCase } from '@/core/useCases/recipes/GetAllRecipeUseCase';
+import { Recipe } from '@/core/entities/Recipe';
+import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
+import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
 import RecipeCard from '@/presentation/components/(BLOG)/Card/RecipeCard';
 
 async function searchRecipes(searchTerm: string): Promise<Recipe[]> {

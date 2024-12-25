@@ -1,6 +1,5 @@
-"use client"
 
-import { Recipe } from '@/core/domain/entities/Recipe'
+import { Recipe } from '@/core/entities/Recipe'
 import FeaturedRecipeSlider from '../carousel/FeaturedCarouselSlider'
 
 interface FeaturedRecipeProps {

@@ -2,7 +2,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Recipe } from "@/core/domain/entities/Recipe";
+import { Recipe } from "@/core/entities/Recipe";
 import { BlogRoutes } from "@/routes/Routes";
 
 type SearchBarProps = {

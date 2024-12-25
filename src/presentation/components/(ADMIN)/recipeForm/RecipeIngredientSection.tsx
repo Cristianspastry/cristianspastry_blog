@@ -1,5 +1,5 @@
 import React from 'react'
-import { INGREDIENTS, QUANTITY_TYPE } from '@/core/common/utils/Constants'
+import { INGREDIENTS, QUANTITY_TYPE } from '@/shared/utils/Constants'
 import { Recipe } from '@/types/Recipe'
 
 interface RecipeIngredientSectionProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from 'react';
-import { Recipe } from "@/core/domain/entities/Recipe";
+import { Recipe } from "@/core/entities/Recipe";
 import RecipeCard from "../Card/RecipeCard";
 import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';

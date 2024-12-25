@@ -1,5 +1,5 @@
 "use client";
-import { APP_NAME, AUTHOR, EMAIL, SOCIAL_MEDIA_LINK } from '@/core/common/utils/Constants';
+import { APP_NAME, AUTHOR, EMAIL, SOCIAL_MEDIA_LINK } from '@/shared/utils/Constants';
 import { BlogRoutes } from '@/routes/Routes';
 import Link from 'next/link';
 

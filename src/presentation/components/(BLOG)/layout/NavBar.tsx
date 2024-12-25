@@ -1,12 +1,12 @@
 "use client";
 
-import { APP_NAME } from '@/core/common/utils/Constants';
+import { APP_NAME } from '@/shared/utils/Constants';
 import Link from 'next/link';
 import { useState, useEffect, } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import { BlogRoutes } from '@/routes/Routes';
-import { FirebaseRecipeRepository } from '@/infrastructure/repositories/FirebaseRecipeRepository';
-import { GetAllRecipeUseCase } from '@/core/useCases/recipes/GetAllRecipeUseCase';
+import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
+import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);

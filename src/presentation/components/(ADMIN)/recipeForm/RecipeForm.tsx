@@ -1,7 +1,7 @@
 'use client'
 
-import { CATEGORIES, COST, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/core/common/utils/Constants';
-import { Recipe } from '@/core/domain/entities/Recipe';
+import { CATEGORIES, COST, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/shared/utils/Constants';
+import { Recipe } from '@/core/entities/Recipe';
 import { useRecipeForm } from '@/presentation/hook/useRecipeForm';
 import React from 'react';
 
@@ -10,6 +10,7 @@ interface RecipeFormProps {
 }
 
 export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
+
   const {
     form: { register, formState: { errors } },
     onSubmit,
@@ -31,10 +32,21 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
     addTip,
     removeTip,
     updateTip,    
+    loading,
+    error
   } = useRecipeForm(existingRecipe || null);
 
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await onSubmit(e);
+  };
+
+  
   return (
-    <form onSubmit={onSubmit} className="max-w-4xl mx-auto p-6 space-y-6">
+    <form onSubmit={handleFormSubmit} className="max-w-4xl mx-auto p-6 space-y-6">
+            {error && <div className="text-red-500 p-4 rounded bg-red-50">{error}</div>}
+
       {/* Titolo */}
       <div>
         <label htmlFor="title" className="block font-medium">Titolo</label>
@@ -454,17 +466,26 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ existingRecipe }) => {
         <label htmlFor="date" className="block font-medium">Data</label>
         <input
           {...register("date")}
-          type="date"
+          type="datetime-local"
           id="date"
           className="w-full p-2 border rounded"
+          min={new Date().toISOString().slice(0, 16)}
+          max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 16)}
+
         />
         {errors.date && <p className="text-red-500">{errors.date.message}</p>}
       </div>
 
       {/* Submit */}
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-        {existingRecipe ? 'Aggiorna Ricetta' : 'Salva Ricetta'}
+      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" disabled={loading}>
+        {loading 
+          ? 'Salvataggio in corso...' 
+          : existingRecipe 
+            ? 'Aggiorna Ricetta' 
+            : 'Salva Ricetta'
+        }
       </button>
+
     </form>
   );
 };

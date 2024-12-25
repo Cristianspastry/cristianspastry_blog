@@ -17,7 +17,8 @@ export const BlogRoutes = {
     },
     Tips: {
         name: 'Tips',
-        link: '/tips'
+        link: '/tips',
+        subLinks : '/tips/'
     },
     About: {
         name: 'About',

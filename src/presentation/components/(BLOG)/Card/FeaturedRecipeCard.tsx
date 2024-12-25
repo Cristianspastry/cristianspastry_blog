@@ -1,16 +1,22 @@
 import React from 'react'
 import Image from 'next/image'
-import { Recipe } from '@/core/domain/entities/Recipe'
+import { Recipe } from '@/core/entities/Recipe'
 
 interface RecipeCardProps {
   recipe: Recipe
 }
 
 export default function FeaturedRecipeCard({ recipe }: RecipeCardProps) {
+  
+
+  if (!recipe) {
+    return null; // or some fallback UI
+  }
+
   return (
     <div className="relative aspect-[16/9]">
       <Image
-        src={recipe.image || ''}
+        src={recipe?.image}
         alt={recipe.title}
         fill
         className="object-cover rounded-lg"
