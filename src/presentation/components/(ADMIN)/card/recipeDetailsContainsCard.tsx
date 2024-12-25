@@ -6,9 +6,6 @@ import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/Fireb
 import { useRouter } from 'next/navigation';
 import React, {  useState } from 'react'
 
-type Props = {
-    params: Promise<{ id: number }>,
-}
 
 
 function isIngredientGroup(item: Ingredient | IngredientGroup): item is IngredientGroup {
@@ -16,7 +13,9 @@ function isIngredientGroup(item: Ingredient | IngredientGroup): item is Ingredie
 }
 
 const RecipeDetailsContainsCard = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [recipe, setRecipe] = useState<Recipe | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
