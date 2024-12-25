@@ -22,7 +22,7 @@ export default function AboutPage() {
                 La passione per la pasticceria è nata nella mia famiglia, dove fin da piccolo 
                 ho imparato i segreti delle ricette tradizionali. Dopo anni di formazione 
                 e esperienza in diverse pasticcerie italiane, ho deciso di aprire 
-                Cristian's Pastry per condividere la mia passione con tutti gli amanti 
+                Cristian&apos;s Pastry per condividere la mia passione con tutti gli amanti 
                 dei dolci.
               </p>
             </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
               Il Nostro Laboratorio
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Nel nostro laboratorio, ogni giorno inizia all'alba con la preparazione 
+              Nel nostro laboratorio, ogni giorno inizia all&apos;alba con la preparazione 
               di impasti freschi e la cottura dei nostri prodotti. Seguiamo un 
               rigoroso processo di selezione degli ingredienti e di controllo della 
               qualità per garantire che ogni dolce che esce dal nostro forno sia 
@@ -66,7 +66,7 @@ export default function AboutPage() {
               <li>Rispetto per le tradizioni della pasticceria italiana</li>
               <li>Innovazione nelle tecniche e nelle presentazioni</li>
               <li>Attenzione al dettaglio in ogni creazione</li>
-              <li>Passione per l'arte della pasticceria</li>
+              <li>Passione per l&apos;arte della pasticceria</li>
             </ul>
           </div>
         </div>

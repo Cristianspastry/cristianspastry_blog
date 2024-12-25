@@ -23,6 +23,7 @@ const RecipeList = () => {
       setRecipes(recipes);
       setLoading(false);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
   ]);
 

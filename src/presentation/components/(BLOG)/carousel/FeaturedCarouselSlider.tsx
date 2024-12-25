@@ -27,6 +27,7 @@ export default function FeaturedRecipeSlider({ recipes }: RecipeSectionProps) {
     }, AUTO_PLAY_INTERVAL)
 
     return () => clearInterval(intervalId)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
