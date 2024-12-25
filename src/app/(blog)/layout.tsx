@@ -11,7 +11,7 @@ export default function BlogLayout({
     return (
       <>
         <Navbar />
-      <main className="container mx-auto py-8 px-4">
+      <main className="container mx-auto py-8 px-4 flex flex-col min-h-screen">
           {children}
         </main>
         <Footer />

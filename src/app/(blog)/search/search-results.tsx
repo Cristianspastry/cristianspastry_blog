@@ -1,29 +1,48 @@
-import { Recipe } from '@/core/entities/Recipe';
-import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
-import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
+"use client";
+import { useEffect } from 'react';
 import RecipeCard from '@/presentation/components/(BLOG)/Card/RecipeCard';
+import { useAppDispatch, useAppSelector } from '@/presentation/state/hooks';
+import { searchRecipes } from '@/presentation/state/slices/recipe/recipeSlice';
 
-async function searchRecipes(searchTerm: string): Promise<Recipe[]> {
-    const recipeRecipesitory = new FirebaseRecipeRepository();
-    const getAllRecipesUseCase = new GetAllRecipeUseCase(recipeRecipesitory);
-    const recipes = await getAllRecipesUseCase.execute();
-    return recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchTerm.toLowerCase()));
+export default function SearchResults({ searchTerm }: { searchTerm: string }) {
+  const dispatch = useAppDispatch();
+  const { results, status, error } = useAppSelector((state) => state.recipes.search);
 
-}
+  useEffect(() => {
+    if (searchTerm) {
+      dispatch(searchRecipes(searchTerm));
+    }
+  }, [dispatch, searchTerm]);
 
-export default async function SearchResults({ searchTerm }: { searchTerm: string }) {
-  const recipes = await searchRecipes(searchTerm);
+  if (status === 'loading') {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <p>Loading results...</p>
+      </div>
+    );
+  }
 
-  if (recipes.length === 0) {
-    return <p className="text-lg text-gray-600">Nessun risultato trovato per {searchTerm}.</p>;
+  if (error) {
+    return (
+      <div className="text-red-500 p-4">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (results.length === 0) {
+    return (
+      <div className="text-center p-4">
+        <p>No recipes found matching &quot;{searchTerm}&quot;</p>
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {recipes.map((recipe) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {results.map((recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} />
       ))}
     </div>
   );
 }
-

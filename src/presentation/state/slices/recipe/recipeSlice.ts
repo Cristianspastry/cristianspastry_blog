@@ -33,8 +33,20 @@ export const fetchRecipeById = createAsyncThunk(
   async (id: string) => {
     console.log('Fetching recipe with ID:', id);
     const response = await getRecipeById(id);
+    if (!response) throw new Error('Recipe not found');
     console.log('Fetched recipe:', response);
-    return serializeDates(response);
+    return serializeDates(response  as unknown as Recipe);
+  }
+);
+
+export const searchRecipes = createAsyncThunk(
+  'recipes/search',
+  async (searchTerm: string) => {
+    const recipes = await getAllRecipes();
+    return recipes.filter((recipe) => 
+      recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      recipe.slug.toLowerCase().includes(searchTerm.toLowerCase())
+    ).map((recipe) => serializeDates(recipe));
   }
 );
 
@@ -52,6 +64,11 @@ interface RecipeState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   form: RecipeFormState;
+  search: {
+    results: Recipe[];
+    status: "idle" | "loading" | "succeeded" | "failed";
+    error: string | null;
+  };
 }
 
 const initialState: RecipeState = {
@@ -65,6 +82,11 @@ const initialState: RecipeState = {
     ingredientGroups: [{ name: '', ingredients: [{ quantity: '', unit: '', name: '' }] }],
     steps: [''],
     tips: ['']
+  },
+  search: {
+    results: [],
+    status: "idle",
+    error: null
   }
 };
 
@@ -160,6 +182,7 @@ const recipeSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch recipes";
       })
+
       .addCase(fetchRecipeBySlug.pending, (state) => {
         state.status = "loading";
       })
@@ -171,6 +194,7 @@ const recipeSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch recipe";
       })
+
       .addCase(SaveRecipe.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -197,7 +221,22 @@ const recipeSlice = createSlice({
       .addCase(fetchRecipeById.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch recipe';
+      })
+
+      .addCase(searchRecipes.pending, (state) => {
+        state.search.status = "loading";
+        state.search.error = null;
+      })
+      .addCase(searchRecipes.fulfilled, (state, action) => {
+        state.search.status = "succeeded";
+        state.search.results = action.payload;
+        state.search.error = null;
+      })
+      .addCase(searchRecipes.rejected, (state, action) => {
+        state.search.status = "failed";
+        state.search.error = action.error.message || "Failed to search recipes";
       });
+  
       
   }
 });

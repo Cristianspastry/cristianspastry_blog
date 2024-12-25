@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-        <footer className="bg-bluModerato text-white py-10">
-            <div className="container mx-auto px-6">
+        <footer className="bg-bluModerato text-white mt-auto">
+            <div className="container mx-auto px-6 py-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     {/* Copyright & Links */}
                     <div className="text-center md:text-left">
@@ -16,22 +16,21 @@ export default function Footer() {
                         <p className="text-sm opacity-80 mb-4">
                             &copy; {new Date().getFullYear()} Tutti i diritti riservati.
                         </p>
-                        <ul className="flex justify-center md:justify-start space-x-4">
+                        <ul className="flex flex-wrap justify-center md:justify-start gap-4">
                             {Object.values(BlogRoutes)
-                            .filter(route =>
-                                // Esclude "Admin" solo in produzione
-                                (process.env.NODE_ENV !== 'production' || route.name !== 'Admin') &&
-                                route.name !== 'Search' // Filtra sempre "Search"
-                            ).map((route) => (
-                                <li key={route.name}>
-                                    <Link
-                                        href={route.link}
-                                        className="text-white hover:underline"
-                                    >
-                                        {route.name}
-                                    </Link>
-                                </li>
-                            ))}
+                                .filter(route =>
+                                    (process.env.NODE_ENV !== 'production' || route.name !== 'Admin') &&
+                                    route.name !== 'Search'
+                                ).map((route) => (
+                                    <li key={route.name}>
+                                        <Link
+                                            href={route.link}
+                                            className="text-white hover:underline whitespace-nowrap"
+                                        >
+                                            {route.name}
+                                        </Link>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
 
@@ -67,13 +66,14 @@ export default function Footer() {
                                 {EMAIL}
                             </Link>
                         </p>
-                        
                     </div>
                 </div>
 
                 {/* Divisore */}
                 <div className="border-t border-gray-500 pt-6 text-center text-sm opacity-80">
-                    <p className='font-playfair_display'>{" Realizzato con ❤️ da  " + AUTHOR}</p>
+                    <p className="font-playfair_display">
+                        {" Realizzato con ❤️ da  " + AUTHOR}
+                    </p>
                 </div>
             </div>
         </footer>

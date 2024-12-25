@@ -1,18 +1,20 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import SearchResults from './search-results';
+import { use } from 'react';
 
 export const metadata = {
   title: 'Risultati di ricerca',
   description: 'Risultati della ricerca di ricette',
 };
 
-export default function SearchPage({
-  searchParams,
-}: {
-  searchParams: { q: string };
-}) {
-  const searchTerm = searchParams.q;
+interface SearchPageProps {
+  searchParams: Promise<{ q: string }>;
+}
+
+export default function SearchPage({ searchParams }: SearchPageProps) {
+  const params = use(searchParams);
+  const searchTerm = params.q;
 
   if (!searchTerm) {
     notFound();

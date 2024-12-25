@@ -1,4 +1,6 @@
-type SerializableValue = string | number | boolean | null | Date | SerializableObject | SerializableArray;
+import { Recipe } from "@/core/entities/Recipe";
+
+type SerializableValue = string | number | boolean | null | Date | SerializableObject | SerializableArray | Recipe;
 type SerializableObject = { [key: string]: SerializableValue };
 type SerializableArray = SerializableValue[];
 
