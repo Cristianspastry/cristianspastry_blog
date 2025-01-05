@@ -1,6 +1,6 @@
 'use client'
 
-import { CATEGORIES } from '@/shared/utils/Constants'
+import { CATEGORIES } from '@/shared/constants/Constants'
 import { useState } from 'react'
 
 

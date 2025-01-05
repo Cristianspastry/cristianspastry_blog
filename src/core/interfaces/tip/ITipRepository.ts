@@ -8,6 +8,8 @@ interface  ITipRepository {
     // Recupera un tip per ID
     getTipById(id: string): Promise<Tip | null>;
   
+    getTipBySlug(slug: string): Promise<Tip | null>;
+    
     // Aggiunge un nuovo tip
     addTip(tip: Tip): Promise<Tip>;
   

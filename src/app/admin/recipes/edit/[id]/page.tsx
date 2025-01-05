@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { use } from 'react'
 import { useAppDispatch, useAppSelector } from '@/presentation/state/hooks'
 import { fetchRecipeById } from '@/presentation/state/slices/recipe/recipeSlice'
-import { RecipeForm } from '@/presentation/components/(ADMIN)/recipeForm/RecipeForm'
+import { RecipeForm } from '@/presentation/components/(ADMIN)/form/RecipeForm'
 import Loader from '@/presentation/components/loader'
 
 export default function EditRecipe({

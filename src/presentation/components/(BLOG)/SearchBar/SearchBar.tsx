@@ -6,7 +6,7 @@ import { Recipe } from "@/core/entities/Recipe";
 import { BlogRoutes } from "@/routes/Routes";
 
 type SearchBarProps = {
-    recipes?: Promise<Recipe[]>;
+    recipes?: Recipe[];
 };
 
 export default function SearchBar({ recipes }: SearchBarProps) {

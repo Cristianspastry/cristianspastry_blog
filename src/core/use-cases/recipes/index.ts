@@ -4,6 +4,7 @@ import { GetRecipeBySlugUseCase } from "@/core/use-cases/recipes/GetRecipeBySlug
 import { SaveRecipeUseCase } from "./SaveRecipeUseCase";
 import { Recipe } from "@/core/entities/Recipe";
 import { GetRecipeByIdUseCase } from "./GetRecipeByIdUseCase";
+import { DeleteRecipeByidUseCase } from "./DeleteRecipeByidUseCase";
 
 const repository = new FirebaseRecipeRepository();
 
@@ -25,4 +26,9 @@ export const saveRecipe = async (recipe: Recipe) => {
 export const getRecipeById = async (id: string) => {
   const getRecipeByIdUseCase = new GetRecipeByIdUseCase(repository);
   return await getRecipeByIdUseCase.execute(id);
+};
+
+export const DeleteRecipe = async (id: string) => {
+  const deleteRecipeUseCase = new DeleteRecipeByidUseCase(repository);
+  return await deleteRecipeUseCase.execute(id);
 };

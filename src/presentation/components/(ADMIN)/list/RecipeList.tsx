@@ -1,47 +1,35 @@
 "use client";
 import { Recipe } from '@/core/entities/Recipe';
-import { DeleteRecipeByidUseCase } from '@/core/use-cases/recipes/DeleteRecipeByidUseCase';
-import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
-import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
-import { AdminRoutes } from '@/routes/Routes';
+import { AdminRoutes, BlogRoutes } from '@/routes/Routes';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, {useEffect, useState } from 'react';
+//import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../loader';
+import { AppDispatch, RootState } from '@/presentation/state/store';
+import { deleteRecipe, fetchRecipes } from '@/presentation/state/slices/recipe/recipeSlice';
 
 const RecipeList = () => {
-   // get all recipes
+  const dispatch = useDispatch<AppDispatch>();
+  //const router = useRouter();
+  const { recipes, status } = useSelector((state: RootState) => state.recipes);
 
-  const [recipes, setRecipes] = useState< Recipe[] >([]);
-  const [loading, setLoading] = useState(false);
-  const recipeRepository = new FirebaseRecipeRepository();
-  const getAllRecipeUseCase = new GetAllRecipeUseCase(recipeRepository);
-  const router = useRouter();
   useEffect(() => {
-    setLoading(true);
-    getAllRecipeUseCase.execute().then((recipes) => {
-      setRecipes(recipes);
-      setLoading(false);
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-  ]);
+    dispatch(fetchRecipes());
+  }, [dispatch]);
 
-  const deleteRecipe = async (id?: string ) => {
-    const recipeRepository = new FirebaseRecipeRepository();
-    const deleteRecipeUseCase =  new DeleteRecipeByidUseCase(recipeRepository);
+  const handleDeleteRecipe = async (id?: string) => {
     const result = confirm(`Sei sicuro di voler eliminare la ricetta ${id}?`);
-    if (result) {     
-      deleteRecipeUseCase.execute(id!).then(() => {
-        alert(`Ricetta ${id} eliminata`);
-         router.refresh();
-      });
+    if (result) {
+      await dispatch(deleteRecipe(id!));
+      dispatch(fetchRecipes()); // Ricarica i dati
+      alert(`Ricetta ${id} eliminata`);
     } else {
       alert(`Ricetta ${id} non eliminata`);
     }
   };
 
-  if (loading) {
+  if (status === "loading") {
     return <Loader />;
   }
 
@@ -51,15 +39,17 @@ const RecipeList = () => {
 
   return (
     <ul className="space-y-4">
-      {recipes.map((recipe) => (
+      {recipes.map((recipe : Recipe) => (
         <li
           key={recipe.id}
           className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all"
         >
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-700">{recipe.title}</span>
+            <span className="font-medium text-gray-700">{recipe.slug}</span>
+            
             <div className="space-x-2">
-            <Link href={AdminRoutes.Recipes.subLinks.recipeDetails + recipe.id} className="text-orange-500 hover:text-orange-600 font-medium transition-all">
+              <Link href={BlogRoutes.Recipes.subLinks + recipe.slug} className="text-orange-500 hover:text-orange-600 font-medium transition-all">
                 Visualizza
               </Link>
               <Link href={AdminRoutes.Recipes.subLinks.editRecipe + recipe.id} className="text-green-500 hover:text-green-600 font-medium transition-all">
@@ -67,7 +57,7 @@ const RecipeList = () => {
               </Link>
               <button
                 className="text-red-500 hover:text-red-600 font-medium transition-all"
-                onClick={ () => deleteRecipe(recipe.id)}
+                onClick={() => handleDeleteRecipe(recipe.id)}
               >
                 Elimina
               </button>

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction,} from "@reduxjs/toolkit";
 import { Ingredient, IngredientGroup, Recipe } from "@/core/entities/Recipe";
-import { getAllRecipes, getRecipeById, getRecipeBySlug, saveRecipe } from "@/core/use-cases/recipes";
+import { DeleteRecipe, getAllRecipes, getRecipeById, getRecipeBySlug, saveRecipe } from "@/core/use-cases/recipes";
 import { serializeDates } from "@/shared/utils/serializeDates";
 
 export const fetchRecipes = createAsyncThunk("recipes/fetchAll", async () => {
@@ -47,6 +47,14 @@ export const searchRecipes = createAsyncThunk(
       recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.slug.toLowerCase().includes(searchTerm.toLowerCase())
     ).map((recipe) => serializeDates(recipe));
+  }
+);
+
+export const deleteRecipe = createAsyncThunk(
+  'recipes/delete',
+  async (id: string) => {
+    const recipeId = DeleteRecipe(id);
+    return recipeId;
   }
 );
 
@@ -235,6 +243,17 @@ const recipeSlice = createSlice({
       .addCase(searchRecipes.rejected, (state, action) => {
         state.search.status = "failed";
         state.search.error = action.error.message || "Failed to search recipes";
+      })
+
+      .addCase(deleteRecipe.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteRecipe.fulfilled, (state, action) => {
+        state.recipes = state.recipes.filter(recipe => recipe.id !== action.payload);
+      })
+      .addCase(deleteRecipe.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Failed to delete recipe";
       });
   
       

@@ -1,21 +1,26 @@
 "use client";
 
-import { APP_NAME } from '@/shared/utils/Constants';
+import { APP_NAME } from '@/shared/constants/Constants';
 import Link from 'next/link';
 import { useState, useEffect, } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import { BlogRoutes } from '@/routes/Routes';
-import { FirebaseRecipeRepository } from '@/infrastructure/database/recipe/FirebaseRecipeRepository';
-import { GetAllRecipeUseCase } from '@/core/use-cases/recipes/GetAllRecipeUseCase';
+import { useAppDispatch, useAppSelector } from "@/presentation/state/hooks"
+import { fetchRecipes } from '@/presentation/state/slices/recipe/recipeSlice';
+
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
-    const recipeRecipesitory = new FirebaseRecipeRepository();
-    const getAllRecipesUseCase = new GetAllRecipeUseCase(recipeRecipesitory);
-    const recipes = getAllRecipesUseCase.execute();
+    const dispatch = useAppDispatch();
+    const { recipes, status, error } = useAppSelector((state) => state.recipes);
 
-    // Gestisce lo scroll della navbar
+    useEffect(() => {
+        dispatch(fetchRecipes());
+    }, [dispatch]);
+
+
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
@@ -25,44 +30,16 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Gestisce la chiusura del menu con ESC
-    useEffect(() => {
-        const handleEscape = (e: { key: string; }) => {
-            if (e.key === 'Escape') setIsOpen(false);
-        };
 
-        if (isOpen) {
-            window.addEventListener('keydown', handleEscape);
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
+    if (status === 'loading') return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
-        return () => {
-            window.removeEventListener('keydown', handleEscape);
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
-
-
-    // Gestisce il click fuori dal menu
-    /*const handleClickOutside = useCallback((event: React.MouseEvent) => {
-            const menu = document.getElementById('mobile-menu');
-            if (isOpen && menu && !menu.contains(event.target) && 
-                !event.target.closest('button[aria-label="Toggle menu"]')) {
-                setIsOpen(false);
-            }
-        }, [isOpen]);
-    
-        useEffect(() => {
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, [handleClickOutside]);*/
 
     return (
         <header
             className={`sticky top-0 z-50 bg-bluModerato text-white py-4 transition-all duration-300 
             ${isScrolled ? 'shadow-lg py-2' : 'shadow-md py-4'}`}
+
         >
             <nav className="container mx-auto flex justify-between items-center px-6" role="navigation">
                 <h1 className="text-2xl md:text-3xl font-bold tracking-wide transition-all duration-300">
@@ -86,7 +63,16 @@ export default function Navbar() {
                             .filter(route =>
                                 // Esclude "Admin" solo in produzione
                                 (process.env.NODE_ENV !== 'production' || route.name !== 'Admin') &&
-                                route.name !== 'Search' // Filtra sempre "Search"
+                                // Esclude "Search"
+                                route.name !== 'Search' &&
+                                // Esclude "Privacy Policy"
+                                route.name !== 'Privacy Policy' &&
+                                // Esclude "Terms of Service"
+                                route.name !== 'Termini e Condizioni' &&
+                                // Esclude "Cookie Policy"
+                                route.name !== 'Cookie Policy' &&
+                                // Esclude "Disclaimer"
+                                route.name !== 'Disclaimer'
                             )
                             .map((route) => (
                                 <li key={route.name}>
@@ -153,7 +139,7 @@ export default function Navbar() {
 
                         <div className="flex-1 overflow-y-auto pt-8">
                             <div className="px-6 pb-8">
-                                <SearchBar recipes={recipes}/>
+                                <SearchBar recipes={recipes} />
                             </div>
 
                             <div className="w-full border-t border-gray-200 mb-8" />
@@ -162,7 +148,17 @@ export default function Navbar() {
                                 {Object.values(BlogRoutes).filter(route =>
                                     // Esclude "Admin" solo in produzione
                                     (process.env.NODE_ENV !== 'production' || route.name !== 'Admin') &&
-                                    route.name !== 'Search' // Filtra sempre "Search"
+
+                                    // Esclude "Search" 
+                                    route.name !== 'Search' &&
+                                    // Esclude "Privacy Policy"
+                                    route.name !== 'Privacy Policy' &&
+                                    // Esclude "Terms of Service"
+                                    route.name !== 'Termini e Condizioni' &&
+                                    // Esclude "Cookie Policy"
+                                    route.name !== 'Cookie Policy' &&
+                                    // Esclude "Disclaimer"
+                                    route.name !== 'Disclaimer'
                                 ).map((link, index) => (
                                     <li key={index} className="w-full text-center" role="none">
                                         <Link

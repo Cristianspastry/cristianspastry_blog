@@ -1,4 +1,4 @@
-export const DEFAULT_LANGUAGE = 'en'
+export const DEFAULT_LANGUAGE = 'it'
 
 export function getLanguage(): string {
   // You can implement logic here to determine the language

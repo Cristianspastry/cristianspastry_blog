@@ -1,6 +1,6 @@
 'use client'
 
-import { CATEGORIES, COST, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/shared/utils/Constants';
+import { CATEGORIES, COST, DIFFICULTY, INGREDIENTS, QUANTITY_TYPE, TIME_UNITY } from '@/shared/constants/Constants';
 import { Recipe } from '@/core/entities/Recipe';
 import { useRecipeForm } from '@/presentation/hook/useRecipeForm';
 import React from 'react';

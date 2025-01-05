@@ -5,6 +5,7 @@ export class TipMapper {
         return {
             id: data.id as string,
             title: data.title as string,
+            slug : data.slug as string,
             content: data.content as string,
             imageUrl: data.imageUrl as string,
             createdAt: data.createdAt as Date,
@@ -12,24 +13,14 @@ export class TipMapper {
         };
     }
     static toPersistence(tip: Tip): Record<string, unknown> {
-        return {
-            id: tip.id,
-            title: tip.title,
-            content: tip.content,
-            imageUrl: tip.imageUrl,
-            createdAt: tip.createdAt,
-            updatedAt: tip.updatedAt
-        };
+       return this.toFirestore(tip);
     }
 
     static toFirestore(tip: Tip): Record<string, unknown> {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...rest } = tip;
         return {
-            id: tip.id,
-            title: tip.title,
-            content: tip.content,
-            imageUrl: tip.imageUrl,
-            createdAt: tip.createdAt,
-            updatedAt: tip.updatedAt
+            ...rest,
         };
     }
 }

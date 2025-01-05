@@ -5,7 +5,6 @@ import { DollarSign, Clock } from 'lucide-react'
 import { BlogRoutes } from '@/routes/Routes'
 interface RecipeCardProps {
   recipe: Recipe
-  featured?: boolean
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe,}) => {

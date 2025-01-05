@@ -1,5 +1,5 @@
 "use client";
-import { APP_NAME, AUTHOR, EMAIL, SOCIAL_MEDIA_LINK } from '@/shared/utils/Constants';
+import { APP_NAME, AUTHOR, EMAIL, SOCIAL_MEDIA_LINK } from '@/shared/constants/Constants';
 import { BlogRoutes } from '@/routes/Routes';
 import Link from 'next/link';
 
@@ -36,7 +36,7 @@ export default function Footer() {
 
                     {/* Social Media */}
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold mb-4">Seguici</h2>
+                        <h2 className="text-2xl font-bold mb-4">Seguimi</h2>
                         <ul className="flex justify-center space-x-4">
                             {SOCIAL_MEDIA_LINK.map((link, index) => (
                                 <li key={index}>

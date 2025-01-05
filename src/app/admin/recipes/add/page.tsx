@@ -1,7 +1,5 @@
 
-"use client"
-
-import { RecipeForm } from '@/presentation/components/(ADMIN)/recipeForm/RecipeForm'
+import { RecipeForm } from '@/presentation/components/(ADMIN)/form/RecipeForm'
 import React from 'react'
 
 const AddRecipe = () => {
